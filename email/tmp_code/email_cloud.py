@@ -1,3 +1,5 @@
+## cloud에서 실행할 용도로 개량할 것.
+
 import smtplib
 import os
 from email.mime.text import MIMEText
