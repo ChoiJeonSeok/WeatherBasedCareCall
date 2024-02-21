@@ -1,0 +1,9 @@
+2024-02-20 19:17:04,324 - ERROR - API key reading failed. Exiting.
+2024-02-20 19:17:04,428 - WARNING - No items found in the XML response for params {'serviceKey': '', 'pageNo': 1, 'numOfRows': 1000, 'dataType': 'XML', 'base_date': '20240220', 'base_time': '0500', 'nx': '37', 'ny': '126'}.
+2024-02-20 19:17:04,428 - WARNING - No data to save for params {'serviceKey': '', 'pageNo': 1, 'numOfRows': 1000, 'dataType': 'XML', 'base_date': '20240220', 'base_time': '0500', 'nx': '37', 'ny': '126'}.
+2024-02-20 19:17:41,939 - ERROR - API key reading failed. Exiting.
+2024-02-20 19:17:42,028 - WARNING - No items found in the XML response for params {'serviceKey': '', 'pageNo': 1, 'numOfRows': 1000, 'dataType': 'XML', 'base_date': '20240220', 'base_time': '0630', 'nx': '55', 'ny': '127'}.
+2024-02-20 19:25:00,695 - INFO - Data has been saved to data\weather_data_20240220_0630_55_127.csv
+2024-02-21 18:38:13,326 - INFO - Data has been saved to data\weather_data_20240221_0630_55_127.csv
+2024-02-21 19:19:10,694 - INFO - Data has been saved to data\weather_data_20240221_0630_55_127.csv
+
