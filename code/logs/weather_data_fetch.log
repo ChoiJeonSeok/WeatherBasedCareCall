@@ -1,0 +1,29 @@
+2024-02-22 17:55:56,172 - ERROR - Error in processing: 'utf-8' codec can't decode byte 0xb9 in position 165: invalid start byte
+2024-02-22 17:58:31,121 - INFO - Data has been saved to data\weather_data_20240222_0500_56_80.csv
+2024-02-22 17:58:35,981 - INFO - Data has been saved to data\weather_data_20240222_0500_59_74.csv
+2024-02-22 17:58:35,987 - ERROR - Error in processing: name 'analyze_weather_conditions' is not defined
+2024-02-22 18:01:53,305 - INFO - Data has been saved to data\weather_data_20240222_0500_56_80.csv
+2024-02-22 18:02:10,314 - INFO - Data has been saved to data\weather_data_20240222_0500_59_74.csv
+2024-02-22 18:02:10,322 - ERROR - Error in processing: name 'analyze_daily_weather' is not defined
+2024-02-22 18:03:14,616 - INFO - Data analysis completed for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:03:14,617 - INFO - Report created for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:03:14,627 - INFO - Data analysis completed for weather_data_20240222_0500_59_74.csv
+2024-02-22 18:03:14,628 - INFO - Report created for weather_data_20240222_0500_59_74.csv
+2024-02-22 18:06:25,083 - INFO - Data has been saved to data\weather_data_20240222_0500_56_80.csv
+2024-02-22 18:06:38,836 - INFO - Data has been saved to data\weather_data_20240222_0500_59_74.csv
+2024-02-22 18:06:38,844 - INFO - Data analysis completed for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:06:38,846 - INFO - Report created for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:06:38,852 - INFO - Data analysis completed for weather_data_20240222_0500_59_74.csv
+2024-02-22 18:06:38,853 - INFO - Report created for weather_data_20240222_0500_59_74.csv
+2024-02-22 18:38:58,661 - ERROR - No such comm target registered: jupyter.widget.control
+2024-02-22 18:38:58,665 - WARNING - No such comm: 47a80701-03c5-4f0d-b0e2-f2ce993c853e
+2024-02-22 18:39:50,147 - INFO - Data has been saved to data\weather_data_20240222_0500_56_80.csv
+2024-02-22 18:39:55,183 - INFO - Data has been saved to data\weather_data_20240222_0500_59_74.csv
+2024-02-22 18:39:55,199 - INFO - Data analysis completed for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:39:55,200 - INFO - Report created for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:39:55,210 - INFO - Data analysis completed for weather_data_20240222_0500_59_74.csv
+2024-02-22 18:39:55,210 - INFO - Report created for weather_data_20240222_0500_59_74.csv
+2024-02-22 18:43:39,545 - INFO - Data analysis completed for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:43:39,546 - INFO - Report created for weather_data_20240222_0500_56_80.csv
+2024-02-22 18:43:39,551 - INFO - Data analysis completed for weather_data_20240222_0500_59_74.csv
+2024-02-22 18:43:39,552 - INFO - Report created for weather_data_20240222_0500_59_74.csv
