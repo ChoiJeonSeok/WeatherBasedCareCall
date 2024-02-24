@@ -80,8 +80,12 @@ report_folder = '../data/report'
 for file_name in os.listdir(report_folder):
     if file_name.endswith('.txt'):
         location, code = extract_info_from_filename(file_name)
-        if location and code:
-            subject = create_subject(location, code)
+        if not location or not code:
+            email_logger.error(f"Failed to extract location and code from file name: {file_name}")
+            continue  # 현재 파일 처리를 건너뛰고 다음 파일로 넘어갑니다
+
+        subject = create_subject(location, code)
+        if code != "00":
             with open(os.path.join(report_folder, file_name), 'r', encoding='cp949') as file:
                 email_content = file.read()
 
@@ -91,7 +95,7 @@ for file_name in os.listdir(report_folder):
 
                 # MIMEText 객체를 생성할 때 HTML 본문을 사용 (수정된 부분)
                 message = create_message(sender_email, receiver_email, subject, email_content, email_content_html)
-                
+
                 # 이메일 전송 시도
                 try:
                     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
