@@ -4,6 +4,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import logging
+import shutil
 
 # 로깅 설정
 log_folder = 'logs/email_logs'  # 이메일 전송 로그를 위한 별도의 폴더
@@ -57,35 +58,49 @@ def create_message(sender_email, receiver_email, subject, text, html):
     return message
 
 def extract_info_from_filename(filename):
-    match = re.search(r'weather_report_(.+?)_(\d{2})\.txt', filename)
+    # 파일 이름에서 지역명, 날짜 및 코드 추출을 위한 정규 표현식 수정
+    match = re.search(r'weather_report_(.+?)_(\d{8})_(\d{6})\.txt', filename)
     if match:
         location = match.group(1)
-        code = match.group(2)
-        return location, code
-    return None, None
+        base_date = match.group(2)
+        code = match.group(3)
+        return location, base_date, code
+    return None, None, None
 
-def create_subject(location, code):
-    condition = ""
-    if code == "11":
-        condition = "폭염 및 강풍 예보"
-    elif code == "10":
-        condition = "폭염 예보"
-    elif code == "01":
-        condition = "강풍 예보"
 
-    return f"{location} 지역 {condition}"
+def create_subject(location, base_date, code):
+    conditions = [weather_conditions[i] for i, flag in enumerate(code) if flag == "1"]
+    condition_str = ", ".join(conditions) if conditions else "특보 없음"
+    return f"{base_date} {location} 지역 {condition_str}"
 
-# ../data/report 폴더에서 txt 파일을 읽고 이메일로 보냅니다.
+# 날씨 코드 입력.
+weather_conditions = {
+    0: "한파",
+    1: "건조",
+    2: "대설",
+    3: "호우",
+    4: "강풍",
+    5: "폭염",
+}
+
+# ../data/report 폴더에서 txt 파일을 읽고 이메일로 보냅니다. 
+# 이메일 전송이 성공하면 보고서를 reported 폴더로 이동하여 보존합니다.
 report_folder = '../data/report'
+reported_folder = '../data/reported'
+
+# 'reported' 폴더가 없으면 생성합니다.
+if not os.path.exists(reported_folder):
+    os.makedirs(reported_folder)
+
 for file_name in os.listdir(report_folder):
     if file_name.endswith('.txt'):
-        location, code = extract_info_from_filename(file_name)
+        location, base_date, code = extract_info_from_filename(file_name)
         if not location or not code:
             email_logger.error(f"Failed to extract location and code from file name: {file_name}")
             continue  # 현재 파일 처리를 건너뛰고 다음 파일로 넘어갑니다
 
-        subject = create_subject(location, code)
-        if code != "00":
+        subject = create_subject(location, base_date, code)
+        if code != "000000":
             with open(os.path.join(report_folder, file_name), 'r', encoding='cp949') as file:
                 email_content = file.read()
 
@@ -93,7 +108,7 @@ for file_name in os.listdir(report_folder):
                 # HTML 형식으로 이메일 본문을 변환
                 email_content_html = email_content.replace('\n', '<br>')
 
-                # MIMEText 객체를 생성할 때 HTML 본문을 사용 (수정된 부분)
+                # MIMEText 객체를 생성할 때 HTML 본문을 사용
                 message = create_message(sender_email, receiver_email, subject, email_content, email_content_html)
 
                 # 이메일 전송 시도
@@ -102,9 +117,18 @@ for file_name in os.listdir(report_folder):
                         server.login(sender_email, password)
                         server.sendmail(sender_email, receiver_email, message.as_string())
                         print(f"{receiver_email}로 이메일 전송 성공")
-                        # 별도의 로거를 사용하여 로그 기록 (수정된 부분)
+                        # 별도의 로거를 사용하여 로그 기록 
                         email_logger.info(f"Email has been sent to {receiver_email} for file {file_name}")
                 except Exception as e:
                     print(f"이메일 전송 실패: {e}")
-                    # 별도의 로거를 사용하여 로그 기록 (수정된 부분)
+                    # 별도의 로거를 사용하여 로그 기록
                     email_logger.error(f"Failed to send email to {receiver_email}: {e}")
+
+# 보고서 파일 reported 폴더로 이동
+for file_name in os.listdir(report_folder):
+    if file_name.endswith('.txt'):
+        source_path = os.path.join(report_folder, file_name)
+        destination_path = os.path.join(reported_folder, file_name)
+        shutil.move(source_path, destination_path)
+        print(f"{file_name} 파일이 {reported_folder}로 이동되었습니다.")
+        
