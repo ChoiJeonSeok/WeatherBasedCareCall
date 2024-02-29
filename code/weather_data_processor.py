@@ -1,6 +1,7 @@
 import weather_api_call
 import weather_data_analysis_function as analysis
 import logging
+import shutil
 
 import os
 import pandas as pd
@@ -45,6 +46,11 @@ weather_status_indices = {
 try:
     # 데이터 폴더 내의 모든 파일을 순회하며 분석
     data_folder = './data'
+    processed_data_folder = './data/processed'  # 처리된 파일을 저장할 폴더
+
+    if not os.path.exists(processed_data_folder):
+        os.makedirs(processed_data_folder)  # 폴더가 없으면 생성
+
     for file_name in os.listdir(data_folder):
         if file_name.endswith('.csv'):
             weather_data_path = os.path.join(data_folder, file_name)
@@ -100,6 +106,11 @@ try:
             with open(report_file_path, 'w', encoding='cp949') as report_file:
                 report_file.write(report)
             logging.info(f"Report created for {file_name}")
+
+            # 분석이 완료된 CSV 파일을 처리된 데이터 폴더로 이동
+            shutil.move(os.path.join(data_folder, file_name),
+                        os.path.join(processed_data_folder, file_name))
+            logging.info(f"Moved processed file {file_name} to {processed_data_folder}")
 
 except Exception as e:
     logging.error(f"Error in processing: {e}")

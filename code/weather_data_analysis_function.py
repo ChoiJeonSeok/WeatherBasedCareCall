@@ -1,5 +1,5 @@
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # 체감온도 계산 함수
 def calculate_heat_index(temp, humidity):
@@ -51,10 +51,25 @@ def analyze_weather_conditions(df):
 # 날짜별 분석 함수
 def analyze_daily_weather(df, base_date):
     daily_report = ""
-    for date in sorted(df['fcstDate'].unique()):
-        if date > base_date + 2:
+    # base_date를 문자열로 변환합니다.
+    base_date_str = str(base_date)
+    base_date = datetime.strptime(base_date_str, '%Y%m%d')
+    
+    # '내일'과 '모레' 날짜를 datetime 객체로 계산
+    tomorrow = (base_date + timedelta(days=1)).strftime('%Y%m%d')
+    day_after_tomorrow = (base_date + timedelta(days=2)).strftime('%Y%m%d')
+
+    # 포함할 날짜 리스트 생성
+    include_dates = [base_date_str, tomorrow, day_after_tomorrow]
+
+    for date in include_dates:
+        # 'fcstDate' 열이 문자열이라면 변환하지 않고, 정수라면 문자열로 변환하여 비교
+        daily_df = df[df['fcstDate'].astype(str) == date]
+        
+        # 해당 날짜의 데이터가 없으면 다음 날짜로 건너뜀
+        if daily_df.empty:
             continue
-        daily_df = df[df['fcstDate'] == date]
+        
         max_temp = daily_df['TMX'].max()
         min_temp = daily_df['TMN'].min() if not pd.isna(daily_df['TMN'].min()) else daily_df['TMP'].min()
         max_precipitation = daily_df['PCP'].max()
@@ -65,4 +80,5 @@ def analyze_daily_weather(df, base_date):
         daily_report += f"최저 기온: {min_temp}°C\n"
         daily_report += f"최대 강수량: {max_precipitation}\n"
         daily_report += f"최대 적설량: {max_snowfall}\n\n"
+    
     return daily_report
