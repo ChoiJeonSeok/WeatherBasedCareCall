@@ -77,6 +77,11 @@ C:.
         weather_data_fetch.log
 ```
 
+### 시퀀스 다이어그램
+![KMA 기상데이터 이상기후 이메일서비스 시퀀스다이어그램](https://github.com/ChoiJeonSeok/WeatherBasedCareCall/assets/82266289/f9d05c6b-b7d9-4227-9ee1-e8211a9df664)
+
+
+
 ## 에러 핸들링 및 로깅
 - 프로젝트 실행 중 발생하는 에러는 로그 파일에 기록됩니다.
 - 로그 파일 위치: `./logs` 및 `./email/logs/email_logs`
