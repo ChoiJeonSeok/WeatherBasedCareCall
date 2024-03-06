@@ -6,7 +6,7 @@
 ## 설치 방법
 
 ### 필요한 라이브러리
--  Python 버전에 종속된 기능은 없습니다. 다만, 프로그램 개발이 Python 3.6 버전을 사용하여 진행되었다는 것을 참고하여 주시기 바랍니다.
+- Python 3.6 이상
 - 필요한 라이브러리는 `requirements.txt`를 통해 설치할 수 있습니다. 
 - 설치 방법: `pip install -r requirements.txt`
 
@@ -15,7 +15,8 @@
 1. **기상청 API 인증키**:
    - 공공데이터 포털에서 기상청 단기예보 조회서비스 신청 후 받은 API 인증키를 `KMA_API_KEY(Decoding).txt` 파일에 저장합니다.
    - 파일 위치: `./` (weather_data_processor.py와 같은 디렉토리)
-
+   - [기상청_단기예보 조회서비스](https://www.data.go.kr/tcs/dss/selectApiDataDetailView.do?publicDataPk=15084084)
+   - ![image](https://github.com/ChoiJeonSeok/TIL/assets/82266289/79768bbd-b64d-468d-bca3-30e98f00c317)
 2. **이메일 설정**:
    - `credentials.txt` 파일에 첫 줄에는 발신자 Gmail 주소, 둘째 줄에는 해당 Gmail 계정의 애플리케이션 비밀번호를 입력합니다.
    - `receivers.txt` 파일에는 수신자의 이메일 주소를 입력합니다.
@@ -86,6 +87,54 @@ C:.
 - 프로젝트 실행 중 발생하는 에러는 로그 파일에 기록됩니다.
 - 로그 파일 위치: `./logs` 및 `./email/logs/email_logs`
 
+### weather_data_fetch.log
+1. **정보 메시지**
+   - **API 키 읽기 성공**: `WeatherDataFetcher` 클래스에서 API 키를 성공적으로 읽었을 때 기록됩니다.
+     - 예: `API key successfully read from {api_key_file_path}`
+
+   - **날씨 데이터 API 요청 성공**: API로부터 날씨 데이터를 성공적으로 받아왔을 때 기록됩니다.
+     - 예: `Weather data successfully fetched for params {params}`
+
+   - **날씨 데이터 CSV 파일 저장 성공**: 날씨 데이터를 CSV 파일로 성공적으로 저장했을 때 기록됩니다.
+     - 예: `Data has been saved to {csv_file_path}`
+
+   - **날씨 데이터 분석 완료**: 날씨 데이터를 분석하여 이상 기후를 판별하고 기후 상태 코드를 생성하는 과정을 지나면 기록됩니다.
+     - 예: `Data analysis completed for {file_name}`
+
+
+   - **데이터 처리 완료**: 날씨 데이터의 처리가 완료되었을 때 기록됩니다.
+     - 예: `Data processing completed for {weather_data_path}`
+
+   - **보고서 생성 성공**: 날씨 데이터 분석을 기반으로 한 보고서가 성공적으로 생성되었을 때 기록됩니다.
+     - 예: `Report created for {file_name}`
+
+   - **처리된 파일 이동 성공**: 처리가 완료된 날씨 데이터 파일을 `processed` 폴더로 성공적으로 이동시켰을 때 기록됩니다.
+     - 예: `Moved processed file {file_name} to {processed_data_folder}`
+
+2. **경고 메시지**
+   - **API 요청 실패**: `requests.get` 호출 중 네트워크 문제 또는 잘못된 요청 등으로 인한 오류 발생한 경우입니다.
+     - 예: `API request failed for params{params}: {e}`
+
+   - **XML 응답 내 항목 부재**: API 응답은 성공하였으나, 예상된 `<item>` 태그가 XML 응답에 없는 경우입니다.
+     - 예: `No items found in the SML response for params {params}.`
+
+   - **저장할 데이터 없음**: `fetch_all_weather_data` 메소드가 비어있는 리스트를 반환하거나, 반환된 데이터를 `DataFrame`으로 변환했을 때 비어있는 경우입니다.
+     - 예: `No data to save for params {params}.`
+
+### email_send.log
+1. **정보 메시지**
+   - **이메일 전송 성공**: 이메일이 성공적으로 전송되었을 때 기록됩니다.
+     - 예: `Email has been sent to {receiver_email} for file {file_name}`
+
+2. **오류 메시지**
+   - **파일명에서 정보 추출 실패**: 보고서 파일명에서 위치와 코드를 추출하는 데 실패했을 때 발생합니다.
+     - 예: `Failed to extract location and code from file name: {file_name}`
+
+   - **이메일 전송 실패**: 이메일 전송 과정에서 오류가 발생한 경우입니다.
+     - 예: `Failed to send email to {receiver_email}: {e}`
+
+
+
 ## 확장 계획
 - 이 프로그램은 인간관계 관리에 다방면으로 도움을 주는 것을 최종 목표로 합니다.
 - 관련 기능들을 추후 추가할 예정입니다.
@@ -97,5 +146,5 @@ C:.
 
 ### 결과 예시
 - 이상 기후 발견 시 전송되는 메일 예시
-- 
+
 ![image](https://github.com/ChoiJeonSeok/WeatherBasedCareCall/assets/82266289/99c39727-dba2-4690-9f31-4a64fae39a6a)
