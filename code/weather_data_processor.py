@@ -33,7 +33,8 @@ sigungu_df = pd.read_csv(sigungu_data_path, encoding='cp949')
 # nx, ny를 키로, 지역명을 값으로 하는 딕셔너리를 생성합니다.
 nx_ny_to_region = dict(zip(zip(sigungu_df['nx'], sigungu_df['ny']), sigungu_df['지역명']))
 
-# 기상 상태와 상태 코드 인덱스 매핑
+# 기상 상태와 상태 코드 인덱스 순서 안내
+# 000000 코드의 순서. 001100 이면 폭설과 호우.
 weather_status_indices = {
     'cold_wave': 0,
     'dry': 1,
