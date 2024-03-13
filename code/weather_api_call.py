@@ -13,8 +13,8 @@ log_file_path = os.path.join(log_folder, 'weather_data_fetch.log')
 logging.basicConfig(filename=log_file_path, format='%(asctime)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 class WeatherDataFetcher:
-    def __init__(self, api_key_file):
-        self.api_key = self.read_api_key(api_key_file)
+    def __init__(self, api_key):
+        self.api_key = api_key
         if not self.api_key:
             logging.error("API key reading failed. Exiting.")
             exit(1)

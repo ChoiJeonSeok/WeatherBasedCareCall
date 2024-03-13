@@ -9,12 +9,12 @@ import datetime
 
 
 # API 키 파일과 날짜, 시간 설정
-api_key_file = "KMA_API_KEY(Decoding).txt"
+api_key = weather_api_call.WeatherDataFetcher.read_api_key("KMA_API_KEY(Decoding).txt")
 current_date = datetime.datetime.now().strftime('%Y%m%d')  # 시스템의 현재 날짜를 YYYYMMDD 형식으로 가져옵니다.
 base_time = '0500'  # 고정 시간
 
 # WeatherDataFetcher 인스턴스 생성
-fetcher = weather_api_call.WeatherDataFetcher(api_key_file)
+fetcher = weather_api_call.WeatherDataFetcher(api_key)
 
 # 격자 좌표 파일 불러오기
 grid_points_path = 'API_grid_points.csv'  #
